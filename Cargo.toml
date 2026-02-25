@@ -1,11 +1,18 @@
 [workspace]
 resolver = "2"
 members = [
+  # -- apps -- 
+
   "apps/cli",
+  "apps/calculator",
+
+  # -- crates --
+
   "crates/config",
   "crates/core",
   "crates/storage",
   "crates/utils",
+  "crates/maths",
 ]
 
 [workspace.package]
