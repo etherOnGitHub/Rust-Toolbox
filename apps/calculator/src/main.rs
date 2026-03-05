@@ -15,8 +15,17 @@ pub fn main() {
     let b = input2.trim().parse::<i32>().unwrap();
     // Enter operand
     println!("Enter an operand (+, -, *, /):");
-    let mut operand = String::new();
-    io::stdin().read_line(&mut operand).unwrap();
+    let operand = loop {
+        let mut op = String::new();
+        io::stdin().read_line(&mut op).unwrap();
+        let op = op.trim();
+        if ["+", "-", "*", "/"].contains(&op) {
+            break op.to_string();
+        } else {
+            println!("Invalid operand. Please enter +, -, *, or /:");
+            continue;
+        }
+    };
     // Perform calculations and print results
     match operand.trim() {
         "+" => println!("{} + {} = {}", a, b, rtb_maths::logic::simple::add(a, b)),
