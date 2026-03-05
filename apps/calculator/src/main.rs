@@ -13,9 +13,16 @@ pub fn main() {
     // Parse inputs to i32
     let a = input1.trim().parse::<i32>().unwrap();
     let b = input2.trim().parse::<i32>().unwrap();
+    // Enter operand
+    println!("Enter an operand (+, -, *, /):");
+    let mut operand = String::new();
+    io::stdin().read_line(&mut operand).unwrap();
     // Perform calculations and print results
-    println!("{} + {} = {}", a, b, rtb_maths::logic::simple::add(a, b));
-    println!("{} - {} = {}", a, b, rtb_maths::logic::simple::subtract(a, b));
-    println!("{} * {} = {}", a, b, rtb_maths::logic::simple::multiply(a, b));
-    println!("{} / {} = {}", a, b, rtb_maths::logic::simple::divide(a, b));
+    match operand.trim() {
+        "+" => println!("{} + {} = {}", a, b, rtb_maths::logic::simple::add(a, b)),
+        "-" => println!("{} - {} = {}", a, b, rtb_maths::logic::simple::subtract(a, b)),
+        "*" => println!("{} * {} = {}", a, b, rtb_maths::logic::simple::multiply(a, b)),
+        "/" => println!("{} / {} = {}", a, b, rtb_maths::logic::simple::divide(a, b)),
+        _ => println!("Invalid operand. Please enter +, -, *, or /."),
+    }
 }
