@@ -1,37 +1,50 @@
-use std::io;
-pub fn main() {
-    // Enter nums
-    println!("Enter two numbers to perform calculations on:");
-    // Get input 1
-    let mut input1 = String::new();
-    println!("First number:");
-    io::stdin().read_line(&mut input1).unwrap();
-    // Get input 2
-    let mut input2 = String::new();
-    println!("Second number:");
-    io::stdin().read_line(&mut input2).unwrap();
-    // Parse inputs to i32
-    let a = input1.trim().parse::<i32>().unwrap();
-    let b = input2.trim().parse::<i32>().unwrap();
-    // Enter operand
-    println!("Enter an operand (+, -, *, /):");
-    let operand = loop {
-        let mut op = String::new();
-        io::stdin().read_line(&mut op).unwrap();
-        let op = op.trim();
-        if ["+", "-", "*", "/"].contains(&op) {
-            break op.to_string();
-        } else {
-            println!("Invalid operand. Please enter +, -, *, or /:");
-            continue;
+use std::io::{self, Write};
+use rtb_maths::logic::simple::{add, subtract, multiply, divide};
+use rtb_maths::operators::Operator;
+
+fn get_operand() -> Operator {
+    loop {
+        println!("Enter an operand (+, -, *, /):");
+        io::stdout().flush().unwrap();
+        let mut input = String::new();
+        io::stdin().read_line(&mut input).unwrap();
+        match input.trim().parse() {
+            Ok(op) => return op,
+            Err(_) => {
+                println!("Invalid operand. Please enter +, -, *, or /.");
+                continue;
+            }
         }
-    };
+    }
+}
+
+fn get_number(prompt: &str) -> f64 {
+    loop {
+        // allow programmer to insert strings into the prompt
+        println!("{}", prompt);
+        let mut input = String::new();
+        io::stdin().read_line(&mut input).unwrap();
+        match input.trim().parse() {
+            Ok(num) => return num,
+            Err(_) => {
+                println!("Invalid input. Please enter a valid number.");
+                continue;
+            }
+        }
+    }
+}
+
+pub fn main() {
+    // Get user input for numbers
+    let a = get_number("Enter the first number:");
+    let b = get_number("Enter the second number:");
+    // Enter operand
+    let operator = get_operand();
     // Perform calculations and print results
-    match operand.trim() {
-        "+" => println!("{} + {} = {}", a, b, rtb_maths::logic::simple::add(a, b)),
-        "-" => println!("{} - {} = {}", a, b, rtb_maths::logic::simple::subtract(a, b)),
-        "*" => println!("{} * {} = {}", a, b, rtb_maths::logic::simple::multiply(a, b)),
-        "/" => println!("{} / {} = {}", a, b, rtb_maths::logic::simple::divide(a, b)),
-        _ => println!("Invalid operand. Please enter +, -, *, or /."),
+    match operator {
+        Operator::Add => println!("{} + {} = {}", a, b, add(a, b)),
+        Operator::Subtract => println!("{} - {} = {}", a, b, subtract(a, b)),
+        Operator::Multiply => println!("{} * {} = {}", a, b, multiply(a, b)),
+        Operator::Divide => println!("{} / {} = {}", a, b, divide(a, b)),
     }
 }
